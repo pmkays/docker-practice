@@ -1,0 +1,13 @@
+Mongo:
+    docker run --rm -d -v data:/data/db --network goals --name mongodb -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
+
+Backend:
+    docker build -t goals-node .
+    docker run --rm -d -p 80:80 -v logs:/app/logs -v /home/paula/docker/multi-01-starting-setup/backend:/app -v /app/node_modules --network goals --name goals-backend goals-node
+
+Frontend:
+    docker run -p 3000:3000 --rm -d -it -v /home/paula/docker/multi-01-starting-setup/frontend/src:/app/src --name goals-frontend goals-react
+
+Network:
+    docker network create goals
+#Dockerfile in Backend has ENV variables for connection string into mongoDB database.
